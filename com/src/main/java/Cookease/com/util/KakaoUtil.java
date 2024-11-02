@@ -49,7 +49,7 @@ public class KakaoUtil {
 
         try {
             oAuthToken = objectMapper.readValue(response.getBody(), KakaoDto.OAuthToken.class);
-            log.info("oAuthToken : " + oAuthToken.getAccessToken());
+            log.info("oAuthToken : " + oAuthToken.getAccess_token();
         } catch (JsonProcessingException e) {
 //            throw new AuthHandler(ErrorStatus._PARSING_ERROR);
         }
@@ -61,7 +61,7 @@ public class KakaoUtil {
         HttpHeaders headers = new HttpHeaders();
 
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-        headers.add("Authorization", "Bearer " + oAuthToken.getAccessToken());
+        headers.add("Authorization", "Bearer " + oAuthToken.getAccess_token());
 
         HttpEntity<MultiValueMap<String, String>> kakaoProfileRequest = new HttpEntity<>(headers);
 
