@@ -17,6 +17,10 @@ public class Member extends BaseTimeEntity{
     @Column(name = "member_id")
     private Long id;
 
+
+    @Column(name = "kakao_id")
+    private Long kakaoId; // 추가된 필드
+
     @Column(unique = true)
     private String username;
     private String profile;

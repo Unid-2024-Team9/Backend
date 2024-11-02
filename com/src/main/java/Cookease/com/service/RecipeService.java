@@ -1,5 +1,10 @@
 package Cookease.com.service;
 
+import Cookease.com.domain.Member;
+import Cookease.com.domain.MemberRecipe;
+import Cookease.com.domain.Recipe;
+import Cookease.com.repository.MemberJpaRepository;
+import Cookease.com.repository.MemberRecipeRepository;
 import Cookease.com.repository.RecipeJpaRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,9 +29,15 @@ public class RecipeService {
     private final RecipeJpaRepository recipeJpaRepository;
 
     @Autowired
+    private final MemberJpaRepository memberJpaRepository;
+
+    @Autowired
+    private final MemberRecipeRepository memberRecipeRepository;
+
+    @Autowired
     private final RestTemplate restTemplate;
 
-    public Map<String, Object> getRecipeDetails(String recipeCode) {
+    public Map<String, Object> getRecipeDetails(Long memberId, String recipeCode) {
         String url = "https://api.spoonacular.com/recipes/" + recipeCode + "/information";
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(url)
                 .queryParam("apiKey", "2953877ea539463d990c1f44907e2cbf");
@@ -36,6 +47,15 @@ public class RecipeService {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode rootNode = objectMapper.readTree(response.getBody());
+
+            // 레시피 정보 추출
+            result.put("title", rootNode.path("title").asText());
+            result.put("recipeId", rootNode.path("id").asInt());
+
+            // 스크랩 여부 확인
+            Long recipeId = rootNode.path("id").asLong();
+            boolean isScrapped = memberRecipeRepository.existsByMemberIdAndRecipeId(memberId, recipeId);
+            result.put("isScrapped", isScrapped);
 
             // analyzedInstructions의 steps 추출
             List<Map<String, Object>> stepsList = new ArrayList<>();
@@ -70,6 +90,7 @@ public class RecipeService {
         return result;
     }
 
+
     // 더미 데이터 파싱하는 함수
     public Map<String, Object> parseDummyData(String recipeCode) {
         String url = "https://api.spoonacular.com/recipes/" + recipeCode + "/information";
@@ -102,7 +123,7 @@ public class RecipeService {
     }
 
     // 재료 가지고 레시피 찾아주는 함수. -> 재료 넣고 썸네일 여러개 보여주는 함수.
-    public List<Map<String, Object>> getRecipesByIngredients(List<String> ingredients, int number, int ranking, boolean ignorePantry) {
+    public List<Map<String, Object>> getRecipesByIngredients(Long memberId, List<String> ingredients, int number, int ranking, boolean ignorePantry) {
         String url = "https://api.spoonacular.com/recipes/findByIngredients";
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(url)
                 .queryParam("apiKey", "2953877ea539463d990c1f44907e2cbf")
@@ -119,9 +140,17 @@ public class RecipeService {
             if (rootNode.isArray()) {
                 for (JsonNode recipeNode : rootNode) {
                     Map<String, Object> recipeDetails = new HashMap<>();
-                    recipeDetails.put("id", recipeNode.path("id").asInt());
+                    Long recipeId = recipeNode.path("id").asLong();
+
+                    // 레시피 정보 추가
+                    recipeDetails.put("id", recipeId);
                     recipeDetails.put("title", recipeNode.path("title").asText());
                     recipeDetails.put("image", recipeNode.path("image").asText());
+
+                    // 스크랩 여부 확인 및 추가
+                    boolean isScrapped = memberRecipeRepository.existsByMemberIdAndRecipeId(memberId, recipeId);
+                    recipeDetails.put("isScrapped", isScrapped);
+
                     recipes.add(recipeDetails);
                 }
             }
@@ -130,7 +159,23 @@ public class RecipeService {
         }
         return recipes;
     }
-//    이름. 북마크 여부, 사진, 레시피 번호
+
+    // 스크랩 메서드 추가
+    public void scrapRecipe(Long memberId, Long recipeId) {
+        Member member = memberJpaRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("Member not found with ID: " + memberId));
+        Recipe recipe = recipeJpaRepository.findById(recipeId)
+                .orElseThrow(() -> new IllegalArgumentException("Recipe not found with ID: " + recipeId));
+
+        // 이미 스크랩했는지 확인
+        if (!memberRecipeRepository.existsByMemberIdAndRecipeId(memberId, recipeId)) {
+            MemberRecipe memberRecipe = MemberRecipe.builder()
+                    .member(member)
+                    .recipe(recipe)
+                    .build();
+            memberRecipeRepository.save(memberRecipe);
+        }
+    }
 
 
 }

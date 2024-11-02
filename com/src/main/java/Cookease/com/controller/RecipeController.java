@@ -16,8 +16,8 @@ public class RecipeController {
     private RecipeService recipeService;
 
     @GetMapping("/{recipeCode}")
-    public ResponseEntity<Map<String, Object>> getRecipe(@PathVariable("recipeCode") String recipeCode) {
-        Map<String, Object> recipeDetails = recipeService.getRecipeDetails(recipeCode);
+    public ResponseEntity<Map<String, Object>> getRecipe(@RequestParam Long memberId, @PathVariable("recipeCode") String recipeCode) {
+        Map<String, Object> recipeDetails = recipeService.getRecipeDetails(memberId, recipeCode);
         return ResponseEntity.ok(recipeDetails);
     }
 
@@ -28,11 +28,18 @@ public class RecipeController {
     }
 
     @GetMapping("/findByIngredients")
-    public ResponseEntity<List<Map<String, Object>>> getRecipesByIngredients(@RequestParam List<String> ingredients,
+    public ResponseEntity<List<Map<String, Object>>> getRecipesByIngredients(@RequestParam Long memberId,
+                                                                             @RequestParam List<String> ingredients,
                                                                              @RequestParam(defaultValue = "10") int number,
                                                                              @RequestParam(defaultValue = "1") int ranking,
                                                                              @RequestParam(defaultValue = "true") boolean ignorePantry) {
-        List<Map<String, Object>> recipes = recipeService.getRecipesByIngredients(ingredients, number, ranking, ignorePantry);
+        List<Map<String, Object>> recipes = recipeService.getRecipesByIngredients(memberId, ingredients, number, ranking, ignorePantry);
         return ResponseEntity.ok(recipes);
+    }
+
+    @PostMapping("/scrap")
+    public ResponseEntity<String> scrapRecipe(@RequestParam Long memberId, @RequestParam Long recipeId) {
+        recipeService.scrapRecipe(memberId, recipeId);
+        return ResponseEntity.ok("Recipe has been scrapped successfully");
     }
 }
