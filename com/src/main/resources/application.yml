@@ -16,7 +16,7 @@ spring:
     init:
       mode: always # 애플리케이션 시작 시 스크립트 초기화 (기본값: embedded)
   config:
-    import: "classpath:kakaoOauthSecret.yml" # kakaoOauthSecret.yml 파일 포함
+    import: classpath:kakaoOAuthSecret.yml # kakaoOauthSecret.yml 파일 포함
 
 #Firebase 설정 추가
 fcm:
