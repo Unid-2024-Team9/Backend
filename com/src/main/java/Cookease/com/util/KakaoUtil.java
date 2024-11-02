@@ -49,7 +49,7 @@ public class KakaoUtil {
 
         try {
             oAuthToken = objectMapper.readValue(response.getBody(), KakaoDto.OAuthToken.class);
-            log.info("oAuthToken : " + oAuthToken.getAccess_token();
+            log.info("oAuthToken : " + oAuthToken.getAccess_token());
         } catch (JsonProcessingException e) {
 //            throw new AuthHandler(ErrorStatus._PARSING_ERROR);
         }
