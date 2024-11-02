@@ -30,6 +30,21 @@ public class ItemService {
         Ingredient ingredient = ingredientRepository.findById(ingredientId)
                 .orElseThrow(() -> new IllegalArgumentException("Ingredient not found with ID: " + ingredientId));
 
+        // 디폴트 expirationDate 설정
+        if (expirationDate == null) {
+            switch (keepCategory) {
+                case ICE:
+                    expirationDate = LocalDateTime.now().plusYears(1);
+                    break;
+                case COLD:
+                    expirationDate = LocalDateTime.now().plusDays(5);
+                    break;
+                case NORMAL:
+                    expirationDate = LocalDateTime.now().plusWeeks(2);
+                    break;
+            }
+        }
+
         MemberIngredient memberIngredient = MemberIngredient.builder()
                 .member(member)
                 .ingredient(ingredient)
@@ -39,6 +54,7 @@ public class ItemService {
 
         return memberIngredientRepository.save(memberIngredient);
     }
+
 
     public List<MemberIngredient> getIngredientsByMemberAndCategory(Long memberId, KeepCategory keepCategory) {
         return memberIngredientRepository.findByMemberIdAndKeepCategory(memberId, keepCategory);

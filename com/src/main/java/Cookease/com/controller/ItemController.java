@@ -27,12 +27,12 @@ public class ItemController {
         this.itemService = itemService;
     }
 
-    @Operation(summary = "Add an ingredient to the refrigerator", description = "Add an ingredient to a member's refrigerator with specified category and expiration date")
+    @Operation(summary = "Add an ingredient to the refrigerator", description = "Add an ingredient to a member's refrigerator with specified category and optional expiration date. If expiration date is not provided, a default value based on the keep category will be used.")
     @PostMapping("/add")
     public ResponseEntity<MemberIngredient> addIngredientToRefrigerator(@RequestParam Long memberId,
                                                                         @RequestParam Long ingredientId,
                                                                         @RequestParam KeepCategory keepCategory,
-                                                                        @RequestParam LocalDateTime expirationDate) {
+                                                                        @RequestParam(required = false) LocalDateTime expirationDate) {
         MemberIngredient memberIngredient = itemService.addIngredientToRefrigerator(memberId, ingredientId, keepCategory, expirationDate);
         return ResponseEntity.ok(memberIngredient);
     }
