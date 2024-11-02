@@ -1,11 +1,12 @@
 package Cookease.com.domain;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -19,6 +20,6 @@ public class Recipe {
     @Column(name = "recipe_id")
     private Long id;
 
-    private String recipeName;
-    private List<Ingredient> keyIngredient;
+    @Column(name = "recipe_name")
+    private String name;
 }

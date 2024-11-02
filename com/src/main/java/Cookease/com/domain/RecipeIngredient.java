@@ -11,30 +11,25 @@ import org.hibernate.annotations.OnDeleteAction;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
-public class Comment extends BaseTimeEntity{
-
+public class RecipeIngredient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "comment_id")
+    @Column(name = "recipe_ingredient_id")
     private Long id;
 
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
-
+    @JoinColumn(name = "recipe_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
-    private Post post;
+    private Recipe recipe;
 
-    @Column(name = "content", nullable = false)
-    private String content;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ingredient_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Ingredient ingredient;
 
     @Builder
-    public Comment(Member member, Post post, String content) {
-        this.member = member;
-        this.post = post;
-        this.content = content;
+    public RecipeIngredient(Recipe recipe, Ingredient ingredient) {
+        this.recipe = recipe;
+        this.ingredient = ingredient;
     }
 }

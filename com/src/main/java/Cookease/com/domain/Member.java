@@ -17,19 +17,11 @@ public class Member extends BaseTimeEntity{
     @Column(name = "member_id")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(unique = true)
     private String username;
-
-    @Column
     private String profile;
-
-    @Column
     private String sido;
-
-    @Column
     private String sigungu;
-
-    @Column
     private String bname;
 
     @Builder
