@@ -18,7 +18,7 @@ public class Ingredient {
 
     @Column(name = "ingredient_name", nullable = false)
     private String name;
-    @Column(name = "ingredient_en_name", nullable = false)
+    @Column(name = "ingredient_en_name")
     private String en_name;
 
     @Enumerated(EnumType.STRING)
