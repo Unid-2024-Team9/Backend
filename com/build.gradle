@@ -35,6 +35,8 @@ dependencies {
 	//firebase 구현
 	implementation 'com.google.firebase:firebase-admin:9.1.1'
 
+	//h2 의존성 추가
+	runtimeOnly 'com.h2database:h2'
 }
 
 tasks.named('test') {
