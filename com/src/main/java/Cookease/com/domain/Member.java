@@ -28,7 +28,8 @@ public class Member extends BaseTimeEntity{
     private String bname;
 
     @Builder
-    public Member(String username, String profile, String sido, String sigungu, String bname) {
+    public Member(Long kakaoId, String username, String profile, String sido, String sigungu, String bname) {
+        this.kakaoId = kakaoId;
         this.username = username;
         this.profile = profile;
         this.sido = sido;

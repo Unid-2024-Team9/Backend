@@ -25,8 +25,8 @@ public class OAuthService {
 
         Long kakaoId = kakaoProfile.getId();
 
-        Member member = memberJpaRepository.findByKakaoId(kakaoId);
-//                .orElseGet(() -> createNewMember(kakaoProfile));
+        Member member = memberJpaRepository.findByKakaoId(kakaoId)
+                .orElseGet(() -> createNewMember(kakaoProfile));
 
         String token = jwtProvider.createToken(member.getKakaoId());
         httpServletResponse.setHeader("Authorization", token);
@@ -35,5 +35,14 @@ public class OAuthService {
                 .id(member.getId())
                 .token(token)
                 .build();
+    }
+
+    public Member createNewMember(KakaoProfile kakaoProfile) {
+        Member member = Member.builder()
+                .kakaoId(kakaoProfile.getId())
+                .username(kakaoProfile.getKakao_account().getProfile().getNickname())
+                .profile(kakaoProfile.getKakao_account().getProfile().getProfile_image_url())
+                .build();
+        return member;
     }
 }
