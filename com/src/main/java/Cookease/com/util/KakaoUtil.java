@@ -79,6 +79,7 @@ public class KakaoUtil {
 
         try {
             kakaoProfile = objectMapper.readValue(response.getBody(), KakaoDto.KakaoProfile.class);
+            log.info("kakao id: " + kakaoProfile.getId());
         } catch (Exception e) {
             log.info(Arrays.toString(e.getStackTrace()));
             System.out.println(Arrays.toString(e.getStackTrace()));
