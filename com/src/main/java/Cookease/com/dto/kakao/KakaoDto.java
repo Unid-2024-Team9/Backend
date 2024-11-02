@@ -21,7 +21,7 @@ public class KakaoDto {
         private Long id;
 //        private String connectedAt;
 //        private Properties properties;
-        private KakaoAccount kakaoAccount;
+        private KakaoAccount kakao_account;
 
 //        @Getter
 //        public class Properties {
