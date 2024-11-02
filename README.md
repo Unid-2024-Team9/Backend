@@ -1,2 +1,3 @@
 # Backend
-1인분 Recipe~!
+
+- JDK 17
