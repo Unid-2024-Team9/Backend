@@ -15,6 +15,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 @Component
 @Slf4j
@@ -79,7 +80,8 @@ public class KakaoUtil {
         try {
             kakaoProfile = objectMapper.readValue(response.getBody(), KakaoDto.KakaoProfile.class);
         } catch (JsonProcessingException e) {
-//            log.info(Arrays.toString(e.getStackTrace()));
+            log.info(Arrays.toString(e.getStackTrace()));
+            System.out.println(Arrays.toString(e.getStackTrace()));
 //            throw new AuthHandler(ErrorStatus._PARSING_ERROR);
         }
 
