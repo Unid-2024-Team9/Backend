@@ -1,5 +1,7 @@
 package Cookease.com.dto.kakao;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
 import java.util.Properties;
@@ -17,15 +19,20 @@ public class KakaoDto {
     }
 
     @Getter
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class KakaoProfile {
         private Long id;
+        @JsonProperty("kakao_account")
         private KakaoAccount kakao_account;
 
         @Getter
+        @JsonIgnoreProperties(ignoreUnknown = true)
         public class KakaoAccount {
+            @JsonProperty("pofile")
             private Profile profile;
 
             @Getter
+            @JsonIgnoreProperties(ignoreUnknown = true)
             public class Profile {
                 private String nickname;
                 private String profile_image_url;
