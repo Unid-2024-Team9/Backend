@@ -79,7 +79,7 @@ public class KakaoUtil {
 
         try {
             kakaoProfile = objectMapper.readValue(response.getBody(), KakaoDto.KakaoProfile.class);
-        } catch (JsonProcessingException e) {
+        } catch (Exception e) {
             log.info(Arrays.toString(e.getStackTrace()));
             System.out.println(Arrays.toString(e.getStackTrace()));
 //            throw new AuthHandler(ErrorStatus._PARSING_ERROR);
