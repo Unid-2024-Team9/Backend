@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# 모든 .properties 파일을 무시
+*.properties
+firebaseAccountKey.json
