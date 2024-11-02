@@ -3,6 +3,7 @@ package Cookease.com.service;
 import Cookease.com.config.jwt.JwtProvider;
 import Cookease.com.domain.Member;
 import Cookease.com.dto.response.JoinResponseDto;
+import Cookease.com.repository.MemberJpaRepository;
 import Cookease.com.util.KakaoUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -26,9 +27,8 @@ public class OAuthService {
 
         Long kakaoId = kakaoProfile.getId();
 
-        Member member = memberJpaRepository.findByKakaoId(kakaoId)
+        Member member = memberJpaRepository.findByKakaoId(kakaoId);
 //                .orElseGet(() -> createNewMember(kakaoProfile));
-                .orElse(null);
 
         String token = jwtProvider.createToken(member.getKakaoId());
         httpServletResponse.setHeader("Authorization", token);
