@@ -7,7 +7,6 @@ import Cookease.com.repository.MemberJpaRepository;
 import Cookease.com.util.KakaoUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import static Cookease.com.dto.kakao.KakaoDto.KakaoProfile;
@@ -19,7 +18,6 @@ public class OAuthService {
     private final KakaoUtil kakaoUtil;
     private final MemberJpaRepository memberJpaRepository;
     private final JwtProvider jwtProvider;
-    private final PasswordEncoder passwordEncoder;
 
     public JoinResponseDto oAuthLogin(String accessCode, HttpServletResponse httpServletResponse) {
         OAuthToken oAuthToken = kakaoUtil.requestToken(accessCode);
