@@ -90,7 +90,6 @@ public class RecipeService {
         return result;
     }
 
-
     // 더미 데이터 파싱하는 함수
     public Map<String, Object> parseDummyData(String recipeCode) {
         String url = "https://api.spoonacular.com/recipes/" + recipeCode + "/information";
