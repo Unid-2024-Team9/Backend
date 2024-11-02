@@ -1,4 +1,4 @@
-package Cookease.com.dto;
+package Cookease.com.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,9 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public class PostRequest {
-
     private Long memberid; //작성자
+    private Long postid; //게시글 id
     private String title; //게시글 제목
     private String content; //게시글 내용
-
 }
