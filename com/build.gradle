@@ -37,6 +37,8 @@ dependencies {
 
 	//h2 의존성 추가
 	runtimeOnly 'com.h2database:h2'
+
+	runtimeOnly 'com.mysql:mysql-connector-j' //mysql 추가
 }
 
 tasks.named('test') {
