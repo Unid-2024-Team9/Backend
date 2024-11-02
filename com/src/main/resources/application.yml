@@ -20,4 +20,8 @@ spring:
 
 #Firebase 설정 추가
 fcm:
-  certification: firebaseworry.json
+  certification: firebaseAccountKey.json
+
+logging:
+  level:
+    root: INFO
