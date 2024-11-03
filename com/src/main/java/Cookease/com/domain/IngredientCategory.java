@@ -1,14 +1,16 @@
 package Cookease.com.domain;
 
 public enum IngredientCategory {
+    GRAINS,
+    FRUITS,
+    DAIRY,
     MEAT,
-    FISH,
-    GRAIN,
-    FRUIT,
-    NOODLE,
-    BREAD,
-    RICE,
-    CAKE,
-    VEGETABLE,
-    MSG
+    VEGETABLES,
+    BEANS,
+    SEAFOOD,
+    SEASONINGS,
+    PROCESSED,
+    NOODLES,
+    RICECAKE,
+    BREAD
 }
