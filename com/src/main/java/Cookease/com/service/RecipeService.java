@@ -49,6 +49,7 @@ public class RecipeService {
             // 레시피 정보 추출
             result.put("title", rootNode.path("title").asText());
             result.put("recipeId", rootNode.path("id").asInt());
+            int servings = rootNode.path("servings").asInt();
 
             // 스크랩 여부 확인
             Long recipeId = rootNode.path("id").asLong();
@@ -75,7 +76,7 @@ public class RecipeService {
             for (JsonNode ingredient : ingredientsNode) {
                 Map<String, Object> ingredientDetails = new HashMap<>();
                 ingredientDetails.put("name", ingredient.path("name").asText());
-                ingredientDetails.put("amount", ingredient.path("amount").asDouble());
+                ingredientDetails.put("amount", Math.round(ingredient.path("amount").asDouble() / servings * 100) / 100.0);
                 ingredientDetails.put("unit", ingredient.path("unit").asText());
                 ingredientsList.add(ingredientDetails);
             }
