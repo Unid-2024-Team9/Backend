@@ -5,6 +5,7 @@ import Cookease.com.domain.KeepCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,4 +13,6 @@ import java.util.Optional;
 public interface MemberIngredientRepository extends JpaRepository<MemberIngredient, Integer> {
     List<MemberIngredient> findByMemberIdAndKeepCategory(Long memberId, KeepCategory keepCategory);
     Optional<MemberIngredient> findByMemberIdAndIngredientId(Long memberId, Long ingredientId);
+    List<MemberIngredient> findAllByExpirationDateBetween(LocalDateTime startDate, LocalDateTime endDate);
+
 }
