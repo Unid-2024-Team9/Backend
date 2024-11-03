@@ -3,6 +3,8 @@ package Cookease.com.service;
 import Cookease.com.domain.Comment;
 import Cookease.com.domain.Member;
 import Cookease.com.domain.Post;
+import Cookease.com.dto.CommentDTO;
+import Cookease.com.dto.PostDTO;
 import Cookease.com.repository.CommentRepository;
 import Cookease.com.repository.MemberJpaRepository;
 import Cookease.com.repository.PostRepository;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,12 +33,13 @@ public class CommunityService {
     private final FcmService fcmService;  // Use FcmService for FCM notifications
 
     @Transactional
-    public Post createPost(Long memberId, String content) {
+    public Post createPost(Long memberId, String content, String title) {
         Member member = memberJpaRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("Member not found with ID: " + memberId));
 
         Post post = Post.builder()
                 .member(member)
+                .title(title)
                 .content(content)
                 .build();
 
@@ -66,13 +70,15 @@ public class CommunityService {
         return savedComment;
     }
 
-    // 모든 글을 조회하는 메서드
-    public List<Post> getAllPosts() {
-        return postRepository.findAll();
+    public List<PostDTO> getAllPosts() {
+        return postRepository.findAll().stream()
+                .map(post -> new PostDTO(post.getId(), post.getTitle(), post.getContent(), post.getMember().getUsername()))
+                .collect(Collectors.toList());
     }
 
-    // 특정 게시물의 모든 댓글을 조회하는 메서드
-    public List<Comment> getCommentsByPostId(Long postId) {
-        return commentRepository.findByPostId(postId);
+    public List<CommentDTO> getCommentsByPostId(Long postId) {
+        return commentRepository.findByPostId(postId).stream()
+                .map(comment -> new CommentDTO(comment.getId(), comment.getContent(), comment.getMember().getUsername(), comment.getPost().getId()))
+                .collect(Collectors.toList());
     }
 }

@@ -18,17 +18,23 @@ public class Post extends BaseTimeEntity {
     @Column(name = "post_id")
     private Long id;
 
+
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")  // `Member` 엔티티와의 연관 관계 설정
     private Member member;
 
+    @Column(name = "title", nullable = false)
+    private String title;
+
     @Column(name = "content", nullable = false)
     private String content;
 
     @Builder
-    public Post(Member member, String content) {
+
+    public Post(Member member, String title, String content) {
         this.member = member;
+        this.title = title;
         this.content = content;
     }
 }

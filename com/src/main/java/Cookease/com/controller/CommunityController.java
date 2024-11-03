@@ -2,6 +2,8 @@ package Cookease.com.controller;
 
 import Cookease.com.domain.Comment;
 import Cookease.com.domain.Post;
+import Cookease.com.dto.CommentDTO;
+import Cookease.com.dto.PostDTO;
 import Cookease.com.service.CommunityService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,8 +27,8 @@ public class CommunityController {
 
     @Operation(summary = "Create a post", description = "Create a new post for a member with the provided content")
     @PostMapping("/post")
-    public ResponseEntity<Post> createPost(@RequestParam Long memberId, @RequestParam String content) {
-        Post post = communityService.createPost(memberId, content);
+    public ResponseEntity<Post> createPost(@RequestParam Long memberId, @RequestParam String content, @RequestParam String title) {
+        Post post = communityService.createPost(memberId, content, title);
         return ResponseEntity.ok(post);
     }
 
@@ -39,15 +41,15 @@ public class CommunityController {
 
     @Operation(summary = "View all posts", description = "Retrieve all community posts")
     @GetMapping("/posts")
-    public ResponseEntity<List<Post>> getAllPosts() {
-        List<Post> posts = communityService.getAllPosts();
+    public ResponseEntity<List<PostDTO>> getAllPosts() {
+        List<PostDTO> posts = communityService.getAllPosts();
         return ResponseEntity.ok(posts);
     }
 
     @Operation(summary = "View comments for a post", description = "Retrieve all comments for a specific post")
     @GetMapping("/comments")
-    public ResponseEntity<List<Comment>> getCommentsByPostId(@RequestParam Long postId) {
-        List<Comment> comments = communityService.getCommentsByPostId(postId);
+    public ResponseEntity<List<CommentDTO>> getCommentsByPostId(@RequestParam Long postId) {
+        List<CommentDTO> comments = communityService.getCommentsByPostId(postId);
         return ResponseEntity.ok(comments);
     }
 }
