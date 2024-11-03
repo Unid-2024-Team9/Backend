@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CommunityService {
@@ -62,5 +64,15 @@ public class CommunityService {
         }
 
         return savedComment;
+    }
+
+    // 모든 글을 조회하는 메서드
+    public List<Post> getAllPosts() {
+        return postRepository.findAll();
+    }
+
+    // 특정 게시물의 모든 댓글을 조회하는 메서드
+    public List<Comment> getCommentsByPostId(Long postId) {
+        return commentRepository.findByPostId(postId);
     }
 }

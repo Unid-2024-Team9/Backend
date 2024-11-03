@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/community")
 @Tag(name = "Community Controller", description = "APIs for managing posts and comments")
@@ -33,5 +35,19 @@ public class CommunityController {
     public ResponseEntity<Comment> createComment(@RequestParam Long memberId, @RequestParam Long postId, @RequestParam String content) {
         Comment comment = communityService.createComment(memberId, postId, content);
         return ResponseEntity.ok(comment);
+    }
+
+    @Operation(summary = "View all posts", description = "Retrieve all community posts")
+    @GetMapping("/posts")
+    public ResponseEntity<List<Post>> getAllPosts() {
+        List<Post> posts = communityService.getAllPosts();
+        return ResponseEntity.ok(posts);
+    }
+
+    @Operation(summary = "View comments for a post", description = "Retrieve all comments for a specific post")
+    @GetMapping("/comments")
+    public ResponseEntity<List<Comment>> getCommentsByPostId(@RequestParam Long postId) {
+        List<Comment> comments = communityService.getCommentsByPostId(postId);
+        return ResponseEntity.ok(comments);
     }
 }
