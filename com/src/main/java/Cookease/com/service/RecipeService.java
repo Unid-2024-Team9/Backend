@@ -16,10 +16,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -145,6 +143,7 @@ public class RecipeService {
                     recipeDetails.put("id", recipeId);
                     recipeDetails.put("title", recipeNode.path("title").asText());
                     recipeDetails.put("image", recipeNode.path("image").asText());
+                    recipeDetails.put("missedIngredientCount", recipeNode.path("missedIngredientCount").asInt());
 
                     // 스크랩 여부 확인 및 추가
                     boolean isScrapped = memberRecipeRepository.existsByMemberIdAndRecipeId(memberId, recipeId);
@@ -156,6 +155,10 @@ public class RecipeService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        recipes = recipes.stream()
+                .sorted(Comparator.comparingInt(recipe -> (int) recipe.get("missedIngredientCount")))
+                .limit(15)
+                .collect(Collectors.toList());
         return recipes;
     }
 

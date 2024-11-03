@@ -36,7 +36,7 @@ public class RecipeController {
     @GetMapping("/findByIngredients")
     public ResponseEntity<List<Map<String, Object>>> getRecipesByIngredients(@RequestParam Long memberId,
                                                                              @RequestParam List<String> ingredients,
-                                                                             @RequestParam(defaultValue = "10") int number,
+                                                                             @RequestParam(defaultValue = "100") int number,
                                                                              @RequestParam(defaultValue = "1") int ranking,
                                                                              @RequestParam(defaultValue = "true") boolean ignorePantry) {
         List<Map<String, Object>> recipes = recipeService.getRecipesByIngredients(memberId, ingredients, number, ranking, ignorePantry);
